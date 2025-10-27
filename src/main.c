@@ -59,7 +59,6 @@ int main(int argc, char *argv[]) {
 	  perror("Failed to open file");
 	  return 1;
 	}
-	printf("row: %d col: %d\n", w.ws_row, w.ws_col);
 
 //	if (notScaled == 1) {
 //	} else {
