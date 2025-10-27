@@ -16,15 +16,40 @@
 
 
 int main(int argc, char *argv[]) {
-	const char oldchars[] = " `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
-	const char chars[] = "                                                          `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+
+	char *helpMessage = "Usage: ascii-to-image <path to image>\nOptions:\n\t -s: Scale image to terminal size\n\t-h: Print this message: \n";
+
+	if (argc == 1) {
+			printf("%s", helpMessage);
+			return 1;
+	}
+
+	int notScaled = 0;
+	int opt;
+	while ((opt = getopt(argc, argv, "sh")) != -1)  {
+		switch (opt) {
+//		case 's':
+//			notScaled = 1;		
+//			break;
+		case 'h':
+			printf("%s", helpMessage);
+			return 0;
+		
+		}
+			}
+	// different levels of ascii-ification
+	const char wchars[] = " `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	const char chars[] = "                                        `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	const char xchars[] = "                                   vczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	const char ychars[] = "                                           CLQ0OZmwqpdbkhao#MW&8%B@S";
+	const char zchars[] = "                                        UJCLQ0OZmwqpdbkhao#MW&8%B@S";
 	int charsLen = strlen(chars);
 	//const char *chars[22]= {" ", " ", " ", " "," ", " ","⠁","⠂","⠃","⠅", "⠇","⠋", "⠛", "⠟","⠿","⡟","⡿","⢿","⣟","⣯","⣷","⣿"};
 	//int charsLen = sizeof(chars) / sizeof(chars[0]);
 
 	struct winsize w;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	int winHeight = w.ws_row;
+	int winHeight = w.ws_row - 1; // promtp at bottom
 	int winWidth = w.ws_col;
 
 	int imageHeight,imageWidth,numChannels;
@@ -36,7 +61,9 @@ int main(int argc, char *argv[]) {
 	}
 	printf("row: %d col: %d\n", w.ws_row, w.ws_col);
 
-	// if image is too wide
+//	if (notScaled == 1) {
+//	} else {
+//	// if image is too wide
 	if (imageWidth > winWidth) {
 		float imageToWindowScaleFactor = (float) imageWidth / winWidth;
 		unsigned char *resizedData = malloc(winWidth * ((int)( imageHeight / imageToWindowScaleFactor)) * 4);
@@ -54,6 +81,7 @@ int main(int argc, char *argv[]) {
 		imageHeight = winHeight;
 		imageWidth = (int) imageWidth / imageToWindowScaleFactor; 
 	}
+//	}
 
 	unsigned char *pixelData = data;
 	int columnIndex;
