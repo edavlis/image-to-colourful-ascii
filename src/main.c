@@ -39,10 +39,7 @@ int main(int argc, char *argv[]) {
 			}
 	// different levels of ascii-ification
 	const char wchars[] = " `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
-	const char chars[] = "                                        `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
-	const char xchars[] = "                                   vczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
-	const char ychars[] = "                                           CLQ0OZmwqpdbkhao#MW&8%B@S";
-	const char zchars[] = "                                        UJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	const char chars[] = "      `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
 	int charsLen = strlen(chars);
 	//const char *chars[22]= {" ", " ", " ", " "," ", " ","⠁","⠂","⠃","⠅", "⠇","⠋", "⠛", "⠟","⠿","⡟","⡿","⢿","⣟","⣯","⣷","⣿"};
 	//int charsLen = sizeof(chars) / sizeof(chars[0]);
