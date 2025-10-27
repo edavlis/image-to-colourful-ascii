@@ -7,3 +7,7 @@ only works on truecolor terminals
          -s: Scale image to terminal size
         -h: Print this message: 
 
+### Examples
+
+![original image #1](./images/image.jpeg "original image #1")
+![original image #2](./images/ascii-image.png "ascii image #1")
