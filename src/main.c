@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <termios.h>
+#include <sys/ioctl.h>
 #include <strings.h>
 #include <math.h>
 #include <termios.h>
@@ -6,22 +9,50 @@
 #include <stdlib.h>
 
 #define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "../include/stb_image.h"
+#include "../include/stb_image_resize2.h"
 
 
 
 int main(int argc, char *argv[]) {
-	char oldchars[] = " `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
-	char chars[] = "                `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	const char oldchars[] = " `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	const char chars[] = "                                                          `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
 	int charsLen = strlen(chars);
+	//const char *chars[22]= {" ", " ", " ", " "," ", " ","⠁","⠂","⠃","⠅", "⠇","⠋", "⠛", "⠟","⠿","⡟","⡿","⢿","⣟","⣯","⣷","⣿"};
+	//int charsLen = sizeof(chars) / sizeof(chars[0]);
+
+	struct winsize w;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	int winHeight = w.ws_row;
+	int winWidth = w.ws_col;
 
 	int imageHeight,imageWidth,numChannels;
-
 	unsigned char *data = stbi_load(argv[1], &imageWidth, &imageHeight, &numChannels, 4); 
 
 	if (!data) {
 	  perror("Failed to open file");
 	  return 1;
+	}
+	printf("row: %d col: %d\n", w.ws_row, w.ws_col);
+
+	// if image is too wide
+	if (imageWidth > winWidth) {
+		float imageToWindowScaleFactor = (float) imageWidth / winWidth;
+		unsigned char *resizedData = malloc(winWidth * ((int)( imageHeight / imageToWindowScaleFactor)) * 4);
+		stbir_resize_uint8_srgb(data, imageWidth, imageHeight, 0, resizedData, winWidth, (int) (imageHeight / imageToWindowScaleFactor), 0, 4);
+		data = resizedData;
+		imageWidth = winWidth;
+		imageHeight = (int) imageHeight / imageToWindowScaleFactor; 
+	}
+	// if image to too tall
+	if (imageHeight > winHeight) {
+		float imageToWindowScaleFactor = (float) imageHeight / winHeight;
+		unsigned char *resizedData = malloc(winHeight* ((int)( imageWidth / imageToWindowScaleFactor)) *4);
+		stbir_resize_uint8_srgb(data, imageWidth, imageHeight, 0, resizedData, (int) imageWidth / imageToWindowScaleFactor, winHeight, 0, 4);
+		data = resizedData;
+		imageHeight = winHeight;
+		imageWidth = (int) imageWidth / imageToWindowScaleFactor; 
 	}
 
 	unsigned char *pixelData = data;
@@ -35,7 +66,6 @@ int main(int argc, char *argv[]) {
 			unsigned char g = *pixelData++;
 			unsigned char b = *pixelData++;
 			unsigned char a = *pixelData++;
-//			printf("\npixel %d:\tr:%c g:%c b:%c a:%c", pixel, r,g,b,a );
 			pixel++;
 
 			float brightnessAverage =  (r + g + b) / 3;
@@ -52,6 +82,7 @@ int main(int argc, char *argv[]) {
 
 	}
 	stbi_image_free(data);
+//	stbi_image_free(resizedData);
 
 	  return 0;
 }
