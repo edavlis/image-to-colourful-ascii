@@ -12,7 +12,7 @@
 
 int main(int argc, char *argv[]) {
 	char oldchars[] = " `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
-	char chars[] = "             +_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	char chars[] = "                `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
 	int charsLen = strlen(chars);
 
 	int imageHeight,imageWidth,numChannels;
@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
 			float brightnessAverage =  (r + g + b) / 3;
 			int characterIndex = (int) (( brightnessAverage / 256) * charsLen);
 		printf("\033[48;2;%d;%d;%dm%c\033[0m",r,g,b, chars[characterIndex]);
-		// erresc: unknown csi ESC[48;2;0z
 
 
 
