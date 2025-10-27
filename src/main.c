@@ -17,7 +17,7 @@
 
 int main(int argc, char *argv[]) {
 
-	char *helpMessage = "Usage: ascii-to-image <path to image>\nOptions:\n\t -s: Scale image to terminal size\n\t-h: Print this message: \n";
+	char *helpMessage = "Usage: ascii-to-image <path to image>\nOptions:\n\t-s: Scale image to terminal size\n\t-h: Print this message: \n";
 
 	if (argc == 1) {
 			printf("%s", helpMessage);
