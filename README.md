@@ -10,4 +10,6 @@ only works on truecolor terminals
 ### Examples
 
 ![original image #1](./images/image.jpeg "original image #1")
-![original image #2](./images/ascii-image.png "ascii image #1")
+![ascii image #1](./images/ascii-image.png "ascii image #1")
+![original image #2](./images/lune.jpg "original image #2")
+![ascii image #2](./images/ascii-lune.png "ascii image #2")
