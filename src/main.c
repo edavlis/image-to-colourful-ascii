@@ -17,29 +17,74 @@
 
 int main(int argc, char *argv[]) {
 
-	char *helpMessage = "Usage: ascii-to-image <path to image>\nOptions:\n\t-s: Scale image to terminal size\n\t-h: Print this message: \n";
+	 char *chars = "`^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+
+
+	 const char chars0[] = "`^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars1[] = "    `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars2[] = "         `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars3[] = "                   `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars4[] = "                             `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars5[] = "                                           `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars6[] = "                                                           `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars7[] = "                                                                                `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars8[] = "                                                                                                                             `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+	 const char chars9[] = " ";
+
+	char *helpMessage = "Usage: ascii-to-image -<options> <path to image>\nOptions:\n\t-s: Scale image to terminal size\n\t-h: Print this message:\n\t<0-9>: Level of characters in image, 0 = most characters, 9 = only background colours \nExample:\n\timage-to-ascii -9s ./image.jpeg\n\n";
+
+	int notScaled = 0; // by default is scaled
+
+	int c;
+	while ((c = getopt(argc, argv, "0123456789sh")) != -1) {
+		switch (c) {
+			case '0':
+				chars = chars0;
+				break;
+			case '1':
+				chars = chars1;
+				break;
+
+			case '2':
+				chars = chars2;
+				break;
+
+			case '3':
+				chars = chars3;
+				break;
+			case '4':
+				chars = chars4;
+				break;
+			case '5':
+				chars = chars5;
+				break;
+			case '6':
+				chars = chars6;
+				break;
+			case '7':
+				chars = chars7;
+				break;
+			case '8':
+				chars = chars8;
+				break;
+			case '9':
+				chars = chars9;
+				break;
+			case 's':
+				notScaled = 1;		
+				break;
+			case 'h':
+				printf("%s", helpMessage);
+				return 0;
+		}
+	}
 
 	if (argc == 1) {
 			printf("%s", helpMessage);
 			return 1;
 	}
 
-	int notScaled = 0;
-	int opt;
-	while ((opt = getopt(argc, argv, "sh")) != -1)  {
-		switch (opt) {
-//		case 's':
-//			notScaled = 1;		
-//			break;
-		case 'h':
-			printf("%s", helpMessage);
-			return 0;
-		
-		}
-			}
-	// different levels of ascii-ification
-	const char wchars[] = " `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
-	const char chars[] = "      `^\",:;Il!i~+_-?][}(1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao#MW&8%B@S";
+
 	int charsLen = strlen(chars);
 	//const char *chars[22]= {" ", " ", " ", " "," ", " ","⠁","⠂","⠃","⠅", "⠇","⠋", "⠛", "⠟","⠿","⡟","⡿","⢿","⣟","⣯","⣷","⣿"};
 	//int charsLen = sizeof(chars) / sizeof(chars[0]);
@@ -50,16 +95,16 @@ int main(int argc, char *argv[]) {
 	int winWidth = w.ws_col;
 
 	int imageHeight,imageWidth,numChannels;
-	unsigned char *data = stbi_load(argv[1], &imageWidth, &imageHeight, &numChannels, 4); 
+	unsigned char *data = stbi_load(argv[2], &imageWidth, &imageHeight, &numChannels, 4); 
 
 	if (!data) {
 	  perror("Failed to open file");
 	  return 1;
 	}
 
-//	if (notScaled == 1) {
-//	} else {
-//	// if image is too wide
+	if (notScaled == 1) {
+	} else {
+	// if image is too wide
 	if (imageWidth > winWidth) {
 		float imageToWindowScaleFactor = (float) imageWidth / winWidth;
 		unsigned char *resizedData = malloc(winWidth * ((int)( imageHeight / imageToWindowScaleFactor)) * 4);
@@ -77,7 +122,7 @@ int main(int argc, char *argv[]) {
 		imageHeight = winHeight;
 		imageWidth = (int) imageWidth / imageToWindowScaleFactor; 
 	}
-//	}
+	}
 
 	unsigned char *pixelData = data;
 	int columnIndex;
