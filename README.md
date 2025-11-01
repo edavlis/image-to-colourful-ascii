@@ -22,10 +22,10 @@ image at low ascii character count
 image at high ascii character count
 
 ![original image #1](./images/image.jpeg "original image #1")
-![ascii image low ascii count](./images/image_8".png "ascii image #1")
-![ascii image high ascii count](./images/image_2".png "ascii image #1")
+![ascii image low ascii count](./images/image_8.png "ascii image #1")
+![ascii image high ascii count](./images/image_2.png "ascii image #1")
 
 
 ![original image #1](./images/sticky_btfo.jpeg "original image #1")
-![ascii image low ascii count](./images/sticky_btfo_8".png "ascii image #1")
-![ascii image high ascii count](./images/sticky_btfo_2".png "ascii image #1")
+![ascii image low ascii count](./images/sticky_btfo_8.png "ascii image #1")
+![ascii image high ascii count](./images/sticky_btfo_2.png "ascii image #1")
